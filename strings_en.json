@@ -1,0 +1,23 @@
+{
+	"strEnterTitleForTextQuestion" : "Enter title for <b>text</b> question",
+	"strEnterTitleForNumericQuestion" : "Enter title for <b>numeric</b> question",
+	"strEnterTitleForImageQuestion" : "Enter title for <b>image</b> question",
+	"strEnterTitleForSingleSelectQuestion" : "Enter title for <b>single select</b> question",
+	"strAddOptionsForSingleSelectQuestion" : "Add options for <b>single select</b> question",
+	"addmoreOptions" : "Add more options",
+	"strEnterTitleForMultiSelectQuestion" : "Enter title for <b>multi select</b> question",
+	"strAddOptionsForMultiSelectQuestion" : "Add options for <b>multi select</b> question",
+	"strSubmitFormLabel" : "SUBMIT FORM",
+	"strSendResponseLabel" : "SEND RESPONSE",
+	"strTapToEnter" : "Tap to enter",
+	"strMiniAppTitle" : "Select site",
+	"strBillPageTitle": "Record Bill",
+	"strMiniAppHeaderTimeLabel": "Created by you at {0}",
+	"name": "Site Name",
+	"site_id": "Site ID",
+	"serving_cell": "Serving Cell",
+	"kplc_account_number": "KPLC Account Number",
+	"kplc_meter_number": "KPLC Meter Number",
+	"max_load_on_site": "Max Load On site",
+	"min_load_on_site": "Min Load On Site"
+}

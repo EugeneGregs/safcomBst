@@ -1,0 +1,36 @@
+{
+  "id": "com.m2m.kpa.testupdate9",
+  "schemaVersion": 1,
+  "displayName": "Safaricom BST Bills",
+  "providerName": "M2M Inc.",
+  "icon": "AppIcon.jpg",
+  "version": "3",
+  "minorVersion": "52",
+  "actionScope": "Group",
+  "appModel": "AppModel.json",
+  "description": "Safcom BST POC",
+  "views": {
+    "ChatCanvasCardView": {
+      "sourceLocation": "ChatCardView.json",
+      "showReceipts": true,
+      "showLikes": false,
+      "showComments": false,
+      "showExpiry": false,
+      "showFooter": true,
+      "showHeader": false,
+      "isResponseEditable": false
+    },
+    "CreationView": {
+      "sourceLocation": "CreationView.html",
+      "showNativeToolbar": false
+    }
+  },
+  "externalUrls": [
+     { 
+       "url" : "https://m2mkaizaladynamics.azurewebsites.net"
+      },
+      {
+        "url" : "https://jsonplaceholder.typicode.com"
+      }
+  ]
+}

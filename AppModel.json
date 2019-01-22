@@ -1,0 +1,67 @@
+{
+  "title": "Safaricom BST Bills",
+  "visibility": "All",
+  "expiry": 4070908800000,
+  "isAnonymous": false,
+  "isResponseAppended": false,
+  "isLocationRequested": true,
+  "questions": [
+    {
+      "title": "Category",
+      "type": "Text"
+    },
+    {
+      "title": "Title",
+      "type": "Text"
+    },
+    {
+      "title": "Description",
+      "type": "Text"
+    },
+    {
+      "title": "Lat",
+      "type": "Text"
+    },
+    {
+      "title": "lng",
+      "type": "Text"
+    },
+    {
+      "title": "loc",
+      "type": "Text"
+    },
+    {
+      "title": "phone",
+      "type": "Text"
+    },
+    {
+      "title": "customername",
+      "type": "Text"
+    },
+    {
+      "title": "approximatetime",
+      "type": "Text"
+    },
+    {
+      "title": "ticketstatus",
+      "type": "Text"
+    }
+  ],
+  "properties":[
+    {
+      "name": "customername",
+      "type": "Text",
+      "value": "Name: Clare Mungai"
+    },
+    {
+      "name": "approximatewaiting",
+      "type": "Text",
+      "value": "Approximate Waiting: 30 minutes"
+    },
+    {
+      "name": "ticketstatus",
+      "type": "Text",
+      "value": "In Progress"
+    }
+  ]
+}
