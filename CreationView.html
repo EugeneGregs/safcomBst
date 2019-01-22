@@ -366,28 +366,26 @@
             var hr = KASClient.UI.getElement("hr");
             var sitedetail = KASClient.UI.getElement("div");
 
-            for( var site of _nearestBst ) {
-                var siteid = site.site_id;
-                var row = KASClient.UI.getElement("div", {
+            for( let site of _nearestBst ) {
+                let siteid = site.site_id;
+                let row = KASClient.UI.getElement("div", {
                     "margin-bottom": "2px"
                 });
                     row.className = "row";
-                var nameDiv = KASClient.UI.getElement("div");
+                let nameDiv = KASClient.UI.getElement("div");
                     nameDiv.className = "col-8";
                     nameDiv.innerText = site.name;
-                var buttonDiv = KASClient.UI.getElement("div");
+                let buttonDiv = KASClient.UI.getElement("div");
                     buttonDiv.className = "col-4";
-                var button = KASClient.UI.getElement("button");
+                let button = KASClient.UI.getElement("button");
                     button.className = "btn btn-sm btn-success";
                     button.innerText = "Select";
                     button.type = "button";
                     button.id = "site" + siteid;
                     button.onclick = function() {
-                        // return function() {
-                        //     loadBillPage(site);
-                        // }
-                        alert("clicked!");
-                    }
+                            loadBillPage(site);
+                        }
+                        // alert("clicked!");
 
                 KASClient.UI.addElement(nameDiv, row);
                 KASClient.UI.addElement(button, buttonDiv);
@@ -477,11 +475,11 @@
                 });
                 // alert(valueTyped);
 
-                for( var bstObj of _bstdetails ) {
-                    var matchValue = bstObj["name"].toLowerCase();
-                    var guessValue = valueTyped.toLowerCase();
+                for( let bstObj of _bstdetails ) {
+                    let matchValue = bstObj["name"].toLowerCase();
+                    let guessValue = valueTyped.toLowerCase();
                     if( matchValue.includes(guessValue) && guessValue ) {
-                        var valueMatchDiv = KASClient.UI.getElement("div", {
+                        let valueMatchDiv = KASClient.UI.getElement("div", {
                             "background-color": "#fff",
                             "padding": "10px",
                             "border-bottom": "1px solid #d4d4d4"
@@ -489,10 +487,10 @@
                         valueMatchDiv.innerText = bstObj["name"];
                         valueMatchDiv.id = "bst" + bstObj["id"];
                         valueMatchDiv.className = "autocomplete-items";
-                        valueMatchDiv.onclick = function() {
-                            loadBillPage();
-                        }
-                        var hidden = KASClient.UI.getElement("input");
+                        valueMatchDiv.onclick = (function() {
+                            loadBillPage(document.getElementById("hidden" + bstObj["id"]).value);
+                        })
+                        let hidden = KASClient.UI.getElement("input");
                             hidden.type = "hidden";
                             hidden.id = "hidden" + bstObj["id"];
                             hidden.value = JSON.stringify(bstObj);
@@ -517,10 +515,7 @@
 
         function loadBillPage(site) {
             // alert(JSON.stringify(site));
-            if(!site) {
-                var siteString = 
-            }
-
+            typeof site == "string" ? site = JSON.parse(site) : "";
             var mainView = KASClient.UI.getElement("div", {
                 "padding": "0px 15px 0px 15px",
                 "display": "flex",
