@@ -382,9 +382,13 @@
                     button.innerText = "Select";
                     button.type = "button";
                     button.id = "site" + siteid;
-                    button.onclick = function(){
-                        loadBillPage(site);
-                    };
+                    button.onclick = function() {
+                        // return function() {
+                        //     loadBillPage(site);
+                        // }
+                        alert("clicked!");
+                    }
+
                 KASClient.UI.addElement(nameDiv, row);
                 KASClient.UI.addElement(button, buttonDiv);
                 KASClient.UI.addElement(buttonDiv, row);
@@ -486,7 +490,7 @@
                         valueMatchDiv.id = "bst" + bstObj["id"];
                         valueMatchDiv.className = "autocomplete-items";
                         valueMatchDiv.onclick = function() {
-                            loadBillPage(document.getElementById("hidden" + this.id).value);
+                            loadBillPage();
                         }
                         var hidden = KASClient.UI.getElement("input");
                             hidden.type = "hidden";
@@ -513,6 +517,9 @@
 
         function loadBillPage(site) {
             // alert(JSON.stringify(site));
+            if(!site) {
+                var siteString = 
+            }
 
             var mainView = KASClient.UI.getElement("div", {
                 "padding": "0px 15px 0px 15px",
