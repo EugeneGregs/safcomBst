@@ -485,9 +485,9 @@
                         valueMatchDiv.innerText = bstObj["name"];
                         valueMatchDiv.id = "bst" + bstObj["id"];
                         valueMatchDiv.className = "autocomplete-items";
-                        valueMatchDiv.onclick = function() {
-                            loadBillPage(document.getElementById("hidden" + this.id).value);
-                        }
+                        valueMatchDiv.onclick = (function() {
+                            loadBillPage(document.getElementById("hidden" + bstObj["id"]).value);
+                        }).bind(bstObj)
                         var hidden = KASClient.UI.getElement("input");
                             hidden.type = "hidden";
                             hidden.id = "hidden" + bstObj["id"];
@@ -513,7 +513,7 @@
 
         function loadBillPage(site) {
             // alert(JSON.stringify(site));
-
+            typeof site == "string" ? site = JSON.parse(site) : "";
             var mainView = KASClient.UI.getElement("div", {
                 "padding": "0px 15px 0px 15px",
                 "display": "flex",
