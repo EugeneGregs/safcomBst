@@ -15,6 +15,7 @@
 	"strMiniAppHeaderTimeLabel": "Created by you at {0}",
 	"name": "Site Name",
 	"site_id": "Site ID",
+	"nosite_msg": "There is no site close to your current location, kindly use the search above. (Start typing 'bst' and all site names will pop up)",
 	"serving_cell": "Serving Cell",
 	"kplc_account_number": "KPLC Account Number",
 	"kplc_meter_number": "KPLC Meter Number",

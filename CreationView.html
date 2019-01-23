@@ -50,6 +50,11 @@
             background: transparent;
             width: calc(100%-30pt);
         }
+
+        .cam-image {
+            width: 100%;
+            height: 150pt;
+        }
     </style>
     <script type="text/javascript" src="KASClient.js"></script>
     <script type="text/javascript" src="jquery.min.js"></script>
@@ -92,6 +97,11 @@
         var accountId;
         var accountName;
         var accountPhone;
+        var _reading;
+        var _comment;
+        var _sideId;
+        var _image;
+        var _revReading;
 
         var _optionText = "";
         var pageNumber = 0;
@@ -287,16 +297,6 @@
             });
         }
 
-        function submitCreationPage() {
-            var questionToAnswerMap = JSON.parse("{}");
-
-            questionToAnswerMap[0] = _issueTitle;
-            questionToAnswerMap[1] = _issueDetail;
-
-            KASClient.Form.sumbitFormResponse(questionToAnswerMap, null, false, false);
-            
-        }
-
         function goBack() {
             _currentPage--;
             _pageNavigator.popPage();
@@ -310,7 +310,7 @@
                 "display": "flex",
                 "flex-direction": "column",
                 "background-color": "#d3d3d3",
-                "margin-bottom": "-4pt"
+                "margin-bottom": "0 px"
             });
 
             //search div
@@ -318,14 +318,14 @@
                 "margin-top": "15px"
             });
             searchDiv.className = "card";
-            var cardBody = KASClient.UI.getElement("div", {
-                "margin-top": "15px"
-            });
+            var cardBody = KASClient.UI.getElement("div");
             cardBody.className = "card-body";
-            var cardTitle = KASClient.UI.getElement("p");
+            var cardHeader = KASClient.UI.getElement("div");
+                cardHeader.className = "card-header";
+            var cardTitle = KASClient.UI.getElement("h6");
                 cardTitle.className = "card-title";
                 cardTitle.innerText = "Search by Site Name: ";
-            var hr = KASClient.UI.getElement("hr");
+            // var hr = KASClient.UI.getElement("hr");
             var inputGroup = KASClient.UI.getElement("div");
                 inputGroup.className = "input-group";
             var input = KASClient.UI.getElement("input");
@@ -348,9 +348,10 @@
             KASClient.UI.addElement(button, inputGroupAppend);
             KASClient.UI.addElement(input, inputGroup);
             KASClient.UI.addElement(inputGroupAppend, inputGroup);
-            KASClient.UI.addElement(cardTitle, cardBody);
-            KASClient.UI.addElement(hr, cardBody);
+            KASClient.UI.addElement(cardTitle, cardHeader);
+            // KASClient.UI.addElement(hr, cardBody);
             KASClient.UI.addElement(inputGroup, cardBody);
+            KASClient.UI.addElement(cardHeader, searchDiv);
             KASClient.UI.addElement(cardBody, searchDiv);
 
             //nearest sites div
@@ -360,11 +361,21 @@
             nearestSiteDiv.className = "card";
             var nearestSiteBody = KASClient.UI.getElement("div");
                 nearestSiteBody.className = "card-body";
-            var cardTitle = KASClient.UI.getElement("p");
+            var cardHeader = KASClient.UI.getElement("div");
+                cardHeader.className = "card-header";
+            var cardTitle = KASClient.UI.getElement("h6");
                 cardTitle.className = "card-title";
                 cardTitle.innerText = "Nearest sites: ";
-            var hr = KASClient.UI.getElement("hr");
+            // var hr = KASClient.UI.getElement("hr");
             var sitedetail = KASClient.UI.getElement("div");
+
+            if(!(_nearestBst.length)) {
+            var infoDiv = KASClient.UI.getElement("div");
+                infoDiv.className = "alert alert-info";
+                infoDiv.innerText = _strings["nosite_msg"];
+
+            KASClient.UI.addElement(infoDiv, nearestSiteBody);
+            }
 
             for( let site of _nearestBst ) {
                 let siteid = site.site_id;
@@ -383,10 +394,9 @@
                     button.type = "button";
                     button.id = "site" + siteid;
                     button.onclick = function() {
-                            loadBillPage(site);
-                        }
-                        // alert("clicked!");
-
+                        getPreviousReading(site);
+                    }
+        
                 KASClient.UI.addElement(nameDiv, row);
                 KASClient.UI.addElement(button, buttonDiv);
                 KASClient.UI.addElement(buttonDiv, row);
@@ -395,9 +405,10 @@
                 
             }
 
-            KASClient.UI.addElement(cardTitle, nearestSiteBody);
-            KASClient.UI.addElement(hr, nearestSiteBody);
+            KASClient.UI.addElement(cardTitle, cardHeader);
+            // KASClient.UI.addElement(hr, nearestSiteBody);
             KASClient.UI.addElement(sitedetail, nearestSiteBody);
+            KASClient.UI.addElement(cardHeader, nearestSiteDiv);
             KASClient.UI.addElement(nearestSiteBody, nearestSiteDiv);
 
             //your location div
@@ -408,18 +419,21 @@
             yourlocDiv.className = "card";
             var locationBody = KASClient.UI.getElement("div");
                 locationBody.className = "card-body";
-            var cardTitle = KASClient.UI.getElement("p");
+            var cardHeader = KASClient.UI.getElement("div");
+                cardHeader.className = "card-header";
+            var cardTitle = KASClient.UI.getElement("h6");
                 cardTitle.className = "card-title";
                 cardTitle.innerText = "Your Location: ";
-            var hr = KASClient.UI.getElement("hr");
+            // var hr = KASClient.UI.getElement("hr");
             var locImage = KASClient.UI.getElement("img");
                 locImage.className = "img-fluid";
                 locImage.src = "https://maps.googleapis.com/maps/api/staticmap?zoom=18&size=360x170&maptype=roadmap&markers=color:blue%7C%7C" +
                             lat + "," + lng + "&key=AIzaSyAMfrWKiELcjgQDzNq1n3LTVMSQAXGSs6E";
 
-            KASClient.UI.addElement(cardTitle, locationBody);
-            KASClient.UI.addElement(hr, locationBody);
+            KASClient.UI.addElement(cardTitle, cardHeader);
+            // KASClient.UI.addElement(hr, locationBody);
             KASClient.UI.addElement(locImage, locationBody);
+            KASClient.UI.addElement(cardHeader, yourlocDiv);
             KASClient.UI.addElement(locationBody, yourlocDiv);
 
            
@@ -447,7 +461,7 @@
                 for(var bst of _bstdetails){
                     if( bst.name == keyWord.toLowerCase() ){
                         // alert(JSON.stringify(bst));
-                        loadBillPage(bst);
+                        getPreviousReading(bst);
                         matched[matched.length] = bst;
                     }
                 }
@@ -488,7 +502,7 @@
                         valueMatchDiv.id = "bst" + bstObj["id"];
                         valueMatchDiv.className = "autocomplete-items";
                         valueMatchDiv.onclick = (function() {
-                            loadBillPage(document.getElementById("hidden" + bstObj["id"]).value);
+                            getPreviousReading(document.getElementById("hidden" + bstObj["id"]).value);
                         })
                         let hidden = KASClient.UI.getElement("input");
                             hidden.type = "hidden";
@@ -499,23 +513,47 @@
                         // alert("Match!");
                     }
                 }
-                KASClient.UI.addElement(parentDiv, inputGroup);
 
-                function clearElements(elmnt) {
-                    var x = document.getElementsByClassName("autocomplete-items");
-                    for (var i = 0; i < x.length; i++) {
-                        if ( !(x[i].innerText.includes(valueTyped)) ) {
-                            // alert(x[i].innerText);
-                            x[i].parentNode.removeChild(x[i]);
-                        }
+                KASClient.UI.addElement(parentDiv, inputGroup);
+            }).on("blur", function() {
+                setTimeout(function() {
+                    clearElements();
+                }, 0)
+            });
+
+            function clearElements(elmnt) {
+                $(".autocomplete-items").remove();
+            }
+        }
+
+        function getPreviousReading(site) {
+            showProgress("Fetching...");
+            typeof site == "string" ? site = JSON.parse(site) : "";
+            var siteId = site["id"];
+
+            $.ajax({
+                url: "https://safcomapi.azurewebsites.net/allBills",
+                type:'get',
+                success: function(response) {
+                var pickedSite = "";
+                for(var item of response) { 
+                    if(item.bstdetails_id == siteId) {
+                        pickedSite = item;
                     }
+                }
+                _revReading = pickedSite ? pickedSite.current_reading : "No prev. reading";
+                hideProgress();
+                loadBillPage(site);
+                },
+                error: function(xhr) {
+                showError('Connection error, Please confirm that you are connected to the internet and try again');
                 }
             });
         }
 
         function loadBillPage(site) {
-            // alert(JSON.stringify(site));
             typeof site == "string" ? site = JSON.parse(site) : "";
+            var siteId = site["id"];
             var mainView = KASClient.UI.getElement("div", {
                 "padding": "0px 15px 0px 15px",
                 "display": "flex",
@@ -528,10 +566,14 @@
                 formCard.className = "card mb-0";
             var formCardBody = KASClient.UI.getElement("div");
                 formCardBody.className = "card-body";
+            var propertyId = KASClient.UI.getElement("input");
+                propertyId.type = "hidden";
+                propertyId.id = "hiddenID"
+                propertyId.value =  site["id"];
             
             for(var property in site) {
                 if( property != "id" && property != "created_at" && property != "updated_at" && property != "lat" && property != "lg") {
-                    var propertyFormGroup = KASClient.UI.getElement("div");
+                var propertyFormGroup = KASClient.UI.getElement("div");
                     propertyFormGroup.className = "form-group"
                 var propertyTitle = KASClient.UI.getElement("h6");
                     propertyTitle.className = "card-title";
@@ -549,6 +591,22 @@
                 // KASClient.UI.addElement(underLine, formCardBody);
                 }
             }
+            KASClient.UI.addElement(propertyId, formCardBody);
+
+                var prevReadingDiv = KASClient.UI.getElement("div");
+                    prevReadingDiv.className = "form-group"
+                var prevReadingTitle = KASClient.UI.getElement("h6");
+                    prevReadingTitle.className = "card-title";
+                    prevReadingTitle.innerText = "Previous Reading";
+                var prevReadingValue = KASClient.UI.getElement("input");
+                    prevReadingValue.className = "form-control";
+                    prevReadingValue.type = "text";
+                    prevReadingValue.disabled = true;
+                    prevReadingValue.value = _revReading;
+
+                KASClient.UI.addElement(prevReadingTitle, prevReadingDiv);
+                KASClient.UI.addElement(prevReadingValue, prevReadingDiv);
+                KASClient.UI.addElement(prevReadingDiv, formCardBody);
 
             //current reading
             var inputDiv = KASClient.UI.getElement("div");
@@ -592,6 +650,7 @@
                         }
                         // alert(JSON.stringify(selectedAttachments));
                         meterImage.setAttribute("src", selectedAttachments[0].localPath);
+                        meterImage.setAttribute("class", "img-thumbnail cam-image");
                         // addImage(compressedTitle, fieldInput);
                     });
                 };
@@ -629,11 +688,42 @@
 
         }
 
-        function submitReading() {
-            var reading = document.getElementById("meterReading").value;
-            var comment = document.getElementById("meterComment").value;
+        // function validateInputs() {
+        //     if() {
 
-            confirm("Are you sure you want to submit?") ? alert("Submitted successfully"):"";
+        //     }
+        // }
+
+        function submitReading() {
+            _reading = document.getElementById("meterReading").value;
+            _comment = document.getElementById("meterComment").value;
+            _siteId =  document.getElementById("hiddenID").value;
+            _image = "testImage.jpg";
+            // validateInputs();
+            var url = "https://safcomapi.azurewebsites.net/savedetails/"+ _siteId + "/" + _reading + "/" + _image + "/" + _comment;
+            showProgress("Please wait...");
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    sumbitFormResponse();
+                }
+            };
+            xhttp.open("GET", url, true);
+            xhttp.send();
+
+            // confirm("Are you sure you want to submit?") ? alert("Submitted successfully"):"";
+        }
+
+        function sumbitFormResponse() {
+            var questionToAnswerMap = JSON.parse("{}");
+                questionToAnswerMap[0] = _siteId;
+                questionToAnswerMap[1] = _reading;
+                questionToAnswerMap[2] = _comment;
+                questionToAnswerMap[3] = _image;
+
+            KASClient.Form.sumbitFormResponse(questionToAnswerMap, null, false, true);
+            hideProgress();
         }
 
         function showError(errorMsg) {
@@ -755,27 +845,6 @@
             }
         }
 
-        function submitDetails() {
-
-            var questionToAnswerMap = JSON.parse("{}");
-
-            questionToAnswerMap[0] = _Issuecategory;
-            questionToAnswerMap[1] = _issueTitle;
-            questionToAnswerMap[2] = _issueDetail;
-            questionToAnswerMap[3] = lat;
-            questionToAnswerMap[4] = lng;
-            questionToAnswerMap[5] = _locationObj.results[0].formatted_address;
-            questionToAnswerMap[6] = _phoneNumber;
-            questionToAnswerMap[7] = "Customer Name: " + accountName;
-            questionToAnswerMap[8] = "Approximate Waiting: 32 mins";
-            questionToAnswerMap[9] = "Ticket Status: In Progress";
-
-
-            // alert(JSON.stringify(questionToAnswerMap));
-            KASClient.Form.sumbitFormResponse(questionToAnswerMap, null, false, false /* showInChatCanvas */);
-            
-        }
-
         function loadLocation() {
             var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=" + apiKey;
             var xhttp = new XMLHttpRequest;
@@ -855,63 +924,6 @@
             }
             KASClient.App.hideProgressBar();
             showSearchPage();
-        }
-
-        function getClientAccountDetails() {
-            showProgress("Please Wait..");
-            let dummyphoneNumber = "+254728084451";
-            let phoneNumber = _phoneNumber;
-            let authurl = "https://m2mkaizaladynamics.azurewebsites.net/api/dynamicsauth?code=nhNa9GGu3qrs53jQfTSpxJ1em63XezyLltuHFtLrFF37aEKaV7lY5Q==&phoneNumber=" + phoneNumber;
-            let testUrl = "https://jsonplaceholder.typicode.com/users";
-            var xhttp = new XMLHttpRequest;
-            xhttp.onreadystatechange = function() {
-                if(this.readyState == 4 && this.status == 200) {
-                    hideProgress();
-                    let responseObj = JSON.parse(this.responseText);
-                    let value = responseObj.value;
-                    if(value && value.length) {
-                        accountId = responseObj.value[0].accountid;
-                        accountName = responseObj.value[0].name;
-                        accountPhone = responseObj.value[0].telephone1;
-                        infaltePage2();
-                    } else {
-                        hideProgress();
-                        showError("Sorry, your Contact does not exist in the organization records");
-                    }
-                } 
-            }
-            xhttp.onerror = function() {
-                hideProgress();
-                showError("Sorry there was a connection error, please try again later");
-            }
-            xhttp.open("GET", authurl, true);
-            xhttp.send();
-        }
-        
-        //Creates case on submit of the form
-        function createCase() {
-            showProgress("Raising Ticket, please wait..");
-            let caseUrl = "https://m2mkaizaladynamics.azurewebsites.net/api/dynamicsCase?code=BJSqeJuX53RyTEfOCqrz/OlaiMhK/WXvPoWWPopXsSCnrIdcu4iKEg==";
-            caseUrl += "&accountId=" + accountId;
-            caseUrl += "&title=" + _issueTitle;
-            caseUrl += "&description=" + _issueDetail;
-            caseUrl += "&category=" + _Issuecategory;
-            caseUrl += "&location=" + _locationObj.results[0].formatted_address;
-            caseUrl += "&userName=" + accountName;
-
-            var xhttp = new XMLHttpRequest;
-            xhttp.onreadystatechange = function() {
-                if(this.readyState == 4 && this.status == 200) {
-                   hideProgress();
-                   submitDetails();
-                } 
-            }
-            xhttp.onerror = function() {
-                showError("Sorry there was a connection error, please try again later");
-            }
-            xhttp.open("GET", caseUrl, true);
-            xhttp.send();
-
         }
 
         function showProgress(message) {
