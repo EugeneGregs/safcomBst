@@ -617,8 +617,9 @@
             var inputValue = KASClient.UI.getElement("input");
                 inputValue.className = "form-control";
                 inputValue.placeholder = "Tap to enter";
-                inputValue.type = "text";
+                inputValue.type = "number";
                 inputValue.id = "meterReading";
+                inputValue.required = true;
 
             //comment
             var commentDiv = KASClient.UI.getElement("div");
@@ -630,7 +631,15 @@
                 commentValue.className = "form-control";
                 commentValue.placeholder = "Enter a brief comment";
                 commentValue.id = "meterComment";
+                commentValue.required = true;
             // commentValue.type = "text";
+
+            $("#meterComment").focus(function(){
+                $("#meterComment").removeClass("border-danger")
+            });
+            $("#meterReading").focus(function(){
+                $("#meterReading").removeClass("border-danger")
+            });
 
             //Image Title
             var imageSectionDiv = KASClient.UI.getElement("div");
@@ -662,7 +671,7 @@
             var submitButton = KASClient.UI.getElement("button");
                 submitButton.className = "btn btn-primary btn-block";
                 submitButton.innerText = "SUBMIT";
-                submitButton.addEventListener("click", submitReading);
+                submitButton.addEventListener("click", validateInputs);
             
             KASClient.UI.addElement(submitButton, cardFooter);
             
@@ -688,17 +697,28 @@
 
         }
 
-        // function validateInputs() {
-        //     if() {
-
-        //     }
-        // }
-
-        function submitReading() {
+        function validateInputs() {
             _reading = document.getElementById("meterReading").value;
             _comment = document.getElementById("meterComment").value;
             _siteId =  document.getElementById("hiddenID").value;
             _image = "testImage.jpg";
+            
+                
+                if(!_reading) {
+                    $("#meterReading").attr("class", "border border-danger form-control");
+                    showError("Meter reading is required");
+                    return;
+                }
+                if(!_comment) {
+                    $("#meterComment").attr("class", "border border-danger form-control");
+                    showError("Comment is required");
+                    return;
+                }
+                submitReading();
+            }
+        
+
+        function submitReading() {
             // validateInputs();
             var url = "https://safcomapi.azurewebsites.net/savedetails/"+ _siteId + "/" + _reading + "/" + _image + "/" + _comment;
             showProgress("Please wait...");
