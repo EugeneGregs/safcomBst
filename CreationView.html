@@ -532,12 +532,12 @@
             var siteId = site["id"];
 
             $.ajax({
-                url: "https://safcomapi.azurewebsites.net/allBills",
+                url: "https://safcombst.azurewebsites.net/allBills",
                 type:'get',
                 success: function(response) {
                 var pickedSite = "";
                 for(var item of response) { 
-                    if(item.bstdetails_id == siteId) {
+                    if(item.site_id == siteId) {
                         pickedSite = item;
                     }
                 }
@@ -572,7 +572,7 @@
                 propertyId.value =  site["id"];
             
             for(var property in site) {
-                if( property != "id" && property != "created_at" && property != "updated_at" && property != "lat" && property != "lg") {
+                if( property != "id" && property != "created_at" && property != "updated_at" && property != "lat" && property != "lng") {
                 var propertyFormGroup = KASClient.UI.getElement("div");
                     propertyFormGroup.className = "form-group"
                 var propertyTitle = KASClient.UI.getElement("h6");
@@ -720,7 +720,7 @@
 
         function submitReading() {
             // validateInputs();
-            var url = "https://safcomapi.azurewebsites.net/savedetails/"+ _siteId + "/" + _reading + "/" + _image + "/" + _comment;
+            var url = "https://safcombst.azurewebsites.net/saveBill/"+ _siteId + "/" + _reading + "/" + _image + "/" + _comment;
             showProgress("Please wait...");
 
             var xhttp = new XMLHttpRequest();
@@ -913,7 +913,7 @@
             //ajax call to get all bsts
             // KASClient.App.showProgressBar("Please wait...");
             $.ajax({
-                url: "https://safcomapi.azurewebsites.net/allbstDetails",
+                url: "https://safcombst.azurewebsites.net/allbsts",
                 type:'get',
                 success: function(response) {
                 //alert(response);
@@ -937,7 +937,7 @@
             // alert("passed");
             for (var bst of _bstdetails){
                 // alert(bst.lat);
-                if( (bst.lat <= maxlat && bst.lat >= minlat ) && ( bst.lg <= maxlng && bst.lg >= minlng )) {
+                if( (bst.lat <= maxlat && bst.lat >= minlat ) && ( bst.lng <= maxlng && bst.lng >= minlng )) {
                     // alert("one");
                     _nearestBst[_nearestBst.length] = bst;
                 }

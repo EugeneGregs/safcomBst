@@ -5,7 +5,7 @@
   "providerName": "M2M Inc.",
   "icon": "AppIcon.jpg",
   "version": "4",
-  "minorVersion": "14",
+  "minorVersion": "17",
   "actionScope": "Group",
   "appModel": "AppModel.json",
   "description": "Safcom BST POC",
