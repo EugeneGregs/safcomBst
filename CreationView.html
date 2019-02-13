@@ -261,40 +261,40 @@
                 KASClient.UI.addElement(_pageNavigator.getView(), container);
             }
 
-            KASClient.App.getLocalizedStringsAsync(function (strings, error) {
-                if (error != null) {
-                    showError("Error:getLocalizedStringsAsync:" + error);
-                    return;
-                }
-                _strings = strings;
-                KASClient.Form.initFormAsync(function (form, error) {
-                    if (error != null) {
-                        showError("Error:initFormAsync:" + error);
-                        return;
-                    }
-                    _form = form;
+            // KASClient.App.getLocalizedStringsAsync(function (strings, error) {
+            //     if (error != null) {
+            //         showError("Error:getLocalizedStringsAsync:" + error);
+            //         return;
+            //     }
+            //     _strings = strings;
+            //     KASClient.Form.initFormAsync(function (form, error) {
+            //         if (error != null) {
+            //             showError("Error:initFormAsync:" + error);
+            //             return;
+            //         }
+            //         _form = form;
 
-                     KASClient.App.getCurrentUserIdAsync(function (userId, error) {
-                        if (error != null) {
-                            handleError(error);
-                            return;
-                        }
-                        KASClient.App.getUsersDetailsAsync([userId], function (users, error) {
-                            if (error != null) {
-                                handleError(error);
-                                return;
-                            }
+            //          KASClient.App.getCurrentUserIdAsync(function (userId, error) {
+            //             if (error != null) {
+            //                 handleError(error);
+            //                 return;
+            //             }
+            //             KASClient.App.getUsersDetailsAsync([userId], function (users, error) {
+            //                 if (error != null) {
+            //                     handleError(error);
+            //                     return;
+            //                 }
 
-                            //assign them to global variables
-                            _currentUserInfo = users[userId];
-                            _name = _currentUserInfo.originalName;
-                            _phoneNumber = _currentUserInfo.phoneNumber;
-                            refreshLocation();
-                            // showSearchPage();
-                        });
-                    });
-                });
-            });
+            //                 //assign them to global variables
+            //                 _currentUserInfo = users[userId];
+            //                 _name = _currentUserInfo.originalName;
+            //                 _phoneNumber = _currentUserInfo.phoneNumber;
+            //                 refreshLocation();
+            //                 // showSearchPage();
+            //             });
+            //         });
+            //     });
+            // });
         }
 
         function goBack() {
@@ -354,62 +354,6 @@
             KASClient.UI.addElement(cardHeader, searchDiv);
             KASClient.UI.addElement(cardBody, searchDiv);
 
-            //nearest sites div
-            var nearestSiteDiv = KASClient.UI.getElement("div", {
-                "margin-top": "8px"
-            });
-            nearestSiteDiv.className = "card";
-            var nearestSiteBody = KASClient.UI.getElement("div");
-                nearestSiteBody.className = "card-body";
-            var cardHeader = KASClient.UI.getElement("div");
-                cardHeader.className = "card-header";
-            var cardTitle = KASClient.UI.getElement("h6");
-                cardTitle.className = "card-title";
-                cardTitle.innerText = "Nearest sites: ";
-            // var hr = KASClient.UI.getElement("hr");
-            var sitedetail = KASClient.UI.getElement("div");
-
-            if(!(_nearestBst.length)) {
-            var infoDiv = KASClient.UI.getElement("div");
-                infoDiv.className = "alert alert-info";
-                infoDiv.innerText = _strings["nosite_msg"];
-
-            KASClient.UI.addElement(infoDiv, nearestSiteBody);
-            }
-
-            for( let site of _nearestBst ) {
-                let siteid = site.site_id;
-                let row = KASClient.UI.getElement("div", {
-                    "margin-bottom": "2px"
-                });
-                    row.className = "row";
-                let nameDiv = KASClient.UI.getElement("div");
-                    nameDiv.className = "col-8";
-                    nameDiv.innerText = site.name;
-                let buttonDiv = KASClient.UI.getElement("div");
-                    buttonDiv.className = "col-4";
-                let button = KASClient.UI.getElement("button");
-                    button.className = "btn btn-sm btn-success";
-                    button.innerText = "Select";
-                    button.type = "button";
-                    button.id = "site" + siteid;
-                    button.onclick = function() {
-                        getPreviousReading(site);
-                    }
-        
-                KASClient.UI.addElement(nameDiv, row);
-                KASClient.UI.addElement(button, buttonDiv);
-                KASClient.UI.addElement(buttonDiv, row);
-                KASClient.UI.addElement(row, sitedetail);
-
-                
-            }
-
-            KASClient.UI.addElement(cardTitle, cardHeader);
-            // KASClient.UI.addElement(hr, nearestSiteBody);
-            KASClient.UI.addElement(sitedetail, nearestSiteBody);
-            KASClient.UI.addElement(cardHeader, nearestSiteDiv);
-            KASClient.UI.addElement(nearestSiteBody, nearestSiteDiv);
 
             //your location div
             var yourlocDiv = KASClient.UI.getElement("div", {

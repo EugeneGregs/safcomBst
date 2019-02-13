@@ -1,11 +1,11 @@
 {
-  "id": "com.m2m.kpa.testupdate9",
+  "id": "com.microsoftrms",
   "schemaVersion": 1,
   "displayName": "Safaricom BST Bills",
   "providerName": "M2M Inc.",
   "icon": "AppIcon.jpg",
   "version": "4",
-  "minorVersion": "10",
+  "minorVersion": "12",
   "actionScope": "Group",
   "appModel": "AppModel.json",
   "description": "Safcom BST POC",
